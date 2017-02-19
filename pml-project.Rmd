@@ -71,8 +71,8 @@ set.seed(6)
 inTrain<-createDataPartition(y=traindf$classe,p=0.6,list=FALSE)
 training<-traindf[inTrain,]
 testing<-traindf[-inTrain,]
-dim(training) # training set: 11776 obs x 53 var
-dim(testing) # testing set: 7846 obs x 53 var
+dim(training)
+dim(testing)
 ```
 
 # Model building
