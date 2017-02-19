@@ -1,7 +1,7 @@
 ---
 title: "Practical Machine Learning Project"
 author: "Walter Jessen"
-date: "February 15, 2017"
+date: "February 18, 2017"
 output: html_document
 ---
 
@@ -30,7 +30,7 @@ The goal of your project is to predict the manner in which they did the exercise
 # Data Processing
 
 ## Load necessary packages
-```{r load_packages, include=FALSE, messages=FALSE}
+```{r load_packages, messages=FALSE}
 library(caret) # also loads lattice, ggplot2
 library(gbm) # also loads survival, splines, parallel
 library(plyr)
@@ -72,15 +72,15 @@ set.seed(6)
 inTrain<-createDataPartition(y=traindf$classe,p=0.6,list=FALSE)
 training<-traindf[inTrain,]
 testing<-traindf[-inTrain,]
-dim(training) # training set: 11776 obs x 53 var
-dim(testing) # testing set: 7846 obs x 53 var
+dim(training)
+dim(testing)
 ```
 
 # Model building
 
 ## Select and compare models
 
-Since this is a classification problem, select the gradient boosting (gbm) and random forest (rf) algorithms. Boosting and random forest are some of the most used/accurate algorithms. Additionally, evaluate the k nearest neighbors (knn) algorithm because I've found that algorithm to be useful for classification previously. The Kappa metric (i.e. measure of concordance) is selected as the comparison criteria. It is extremely important to use cross validation when running the random forest algorithm. Thus, to reduce the risk of overfitting, a 10-fold cross validation is used.
+Since this is a classification problem, select the gradient boosting (gbm) and random forest (rf) algorithms. Boosting and random forest are some of the most used/accurate algorithms. Additionally, evaluate the k nearest neighbors (knn) algorithm because I've found that algorithm to be useful for classification previously. The kappa metric (i.e. measure of concordance) is selected as the comparison criteria. It is extremely important to use cross validation when running the random forest algorithm. Thus, to reduce the risk of overfitting, a 10-fold cross validation is used.
 ```{r train_models}
 fitControl<-trainControl(method="cv",number=10)
 # Gradient boosting algorithm  (boost with trees)
@@ -96,19 +96,19 @@ knnFit<-train(classe~.,data=training,preProcess=c("center","scale"),method="knn"
 Compare models by resampling. Plot kappa values for each model in order to select the best model to use on the test set.
 ```{r visualize_resamples}
 library(lattice)
-resamps <- resamples(list(gbm=gbmFit,rf=rfFit,knn=knnFit))
+resamps<-resamples(list(gbm=gbmFit,rf=rfFit,knn=knnFit))
 summary(resamps)
 bwplot(resamps,metric="Kappa",main="Kappa Values by Algorithm\nK Nearest Neighbors (knn), Gradient Boosting (gbm), Random Forest (rf)")
 ```
 
-Based on the summary table and box-and-whisker plot above, the Random Forest algorithm performs better than Gradient Boosting or K Nearest Neighbors with a higher mean accuracy (0.9904), higher mean Kappa value (0.9879), and tighter distribution of values. Select the Random Forest model for cross validation and to predict the 20 different test cases.
+Based on the summary table and box-and-whisker plot above, the random forest algorithm performs better than gradient goosting or k nearest neighbors with a higher mean accuracy, higher mean kappa value, and tighter distribution of values. Select the random forest model for cross validation and prediction of the 20 different test cases.
 
 ## Cross validation
 
 Perform cross validataion on the test set using the prediction model based on the random forest algorithm.
 ```{r cross_validation}
 cvPred<-predict(rfFit,testing)
-confusionMatrix(cvPred, testing$classe)
+confusionMatrix(cvPred,testing$classe)
 ```
 
 ## Expected out-of-sample error
