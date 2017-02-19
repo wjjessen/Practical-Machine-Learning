@@ -294,9 +294,9 @@ traindf&lt;-traindf[,which(nasumindex==0)]</code></pre>
 inTrain&lt;-createDataPartition(y=traindf$classe,p=0.6,list=FALSE)
 training&lt;-traindf[inTrain,]
 testing&lt;-traindf[-inTrain,]
-dim(training) # training set: 11776 obs x 53 var</code></pre>
+dim(training)</code></pre>
 <pre><code>## [1] 11776    53</code></pre>
-<pre class="r"><code>dim(testing) # testing set: 7846 obs x 53 var</code></pre>
+<pre class="r"><code>dim(testing)</code></pre>
 <pre><code>## [1] 7846   53</code></pre>
 </div>
 </div>
