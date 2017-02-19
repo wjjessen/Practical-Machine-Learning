@@ -8,8 +8,6 @@ Project code for the Coursera "Practical Machine Learning" class
 
   * pml-project.html: raw html file of the project
 
-For a webpage showcasing this repository project, see this GitHub pages page:
-
 View this repository project rendered as a normal html page in your browser here: 
 
 https://wjjessen.github.io/Practical-Machine-Learning/pml-project.html
